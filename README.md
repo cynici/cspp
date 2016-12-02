@@ -58,3 +58,7 @@ services:
       - ./home:/home/runuser
       - ./data:/data
 ```
+
+* Pull the [image](https://hub.docker.com/r/cheewai/cspp) from Docker hub, `docker-compose pull`. Alternatively, you can clone this git repo and build the Docker image locally.
+
+* At this point, the image is ready to run, `docker-compose --rm viirs_edr viirs_edr.sh ...` 

@@ -11,3 +11,5 @@ RUN apt-get update \
  && curl -o /usr/bin/gosu -kfsSL "$GOSU_DOWNLOAD_URL" \
  && chmod +x /usr/bin/gosu \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ADD docker-entrypoint.sh /docker-entrypoint.sh
