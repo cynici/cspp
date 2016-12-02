@@ -13,4 +13,4 @@ RUN apt-get update \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod 755 /docker/entrypoint.sh
+RUN chmod 755 /docker-entrypoint.sh
