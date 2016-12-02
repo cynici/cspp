@@ -49,7 +49,7 @@ tar xf ../CSPP_VIIRS_EDR_V2.0.tar.gz
 ```
 version: '2'
 services:
-  viirs_edr:
+  cspp:
     image: cheewai/cspp
     environment:
       - RUNUSER_UID=1000
@@ -59,6 +59,8 @@ services:
       - ./data:/data
 ```
 
-* Pull the [image](https://hub.docker.com/r/cheewai/cspp) from Docker hub, `docker-compose pull`. Alternatively, you can clone this git repo and build the Docker image locally.
+* Pull the [image](https://hub.docker.com/r/cheewai/cspp) from Docker hub, `docker-compose pull`. Alternatively, you can clone this git repo and build the Docker image locally, in which case, you should replace *image* with *build* in the `docker-compose.yml` file.
 
-* At this point, the image is ready to run, `docker-compose --rm viirs_edr viirs_edr.sh ...` 
+* Update the ancillary data, `docker-compose run --rm cspp /home/runuser/cspp_update.sh`. 
+
+* At this point, the image is ready to run, `docker-compose --rm cspp viirs_edr.sh ...` 
