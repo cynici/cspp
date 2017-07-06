@@ -2,15 +2,13 @@
 #
 # bash is a prerequisite
 #
-set -ux
 export HOME="${RUNUSER_HOME:-/home/runuser}"
-
+set -u
 if [ -x /usr/sbin/useradd ]; then
   useradd -s /bin/false --no-create-home --home-dir "$HOME" -u $RUNUSER_UID runuser
 else
   adduser -s /bin/false -D -h $HOME -H -u $RUNUSER_UID runuser
 fi
-
 set +u
 test -f "$HOME/.bashrc" || {
   cat >$HOME/.bashrc <<EOF
