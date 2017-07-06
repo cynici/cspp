@@ -64,3 +64,11 @@ services:
 * Update the ancillary data, `docker-compose run --rm cspp /home/runuser/cspp_update.sh`. 
 
 * At this point, the image is ready to run, `docker-compose --rm cspp viirs_edr.sh ...` 
+
+
+## Processing historical data sets
+
+From the CSPP v2.2 Installation Guilde:
+
+> CSPP SDR Version 2.2 can be used for creating VIIRS, CrIS and ATMS SDRs from historical RDRs beginning with data collected on 5 July 2014. However, processing historical VIIRS datasets that cross the static LUT to RSBAUTOCAL coefficient file boundary (See section 2.2.1) of 9 November 2015 at 17:00 UTC, will cause the CSPP SDR v2.2 software to fail. Processing data sets that begin and end prior to this boundary, or begin and end after this boundary will complete successfully.
+
