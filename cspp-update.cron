@@ -1,0 +1,6 @@
+#
+# Initial run only???
+#sdr_luts.sh -d -W /home/runuser/tmp
+#
+# Daily update required for CSPP v3.1.2
+0 23 * * * runuser source /home/runuser/.bashrc; sdr_ancillary.sh -d -W /home/runuser/tmp

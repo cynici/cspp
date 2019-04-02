@@ -11,6 +11,7 @@ RUN apt-get update \
  && chmod +x /usr/bin/gosu \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ADD cspp-update.cron /etc/cron.d/cspp-update
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 WORKDIR /home/runuser
 ENTRYPOINT ["/docker-entrypoint.sh"]
