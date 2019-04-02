@@ -10,15 +10,20 @@ This repo builds a Docker image that can run [Community Satellite Processing Pac
 ## Hardware requirements for CSPP version 2
 
 * Intel or AMD CPU with 64-bit instruction support
-* 16 GB RAM (minimum)
+
+* 16 GB RAM when running 1-core processing. Add 8 GB for every additional
+concurrent processing core
+
 * CentOS 6 64-bit Linux (or other compatible 64-bit Linux distribution)
+
 * 100 GB disk space (minimum)
+
 * Internet connection (for downloading ancillary data)
 
 ## Software requirements to use this repo
 
-* docker engine 1.10+
-* docker-compose 1.8+ (optional, more convenient)
+* docker-ce 18.03+
+* docker-compose 1.11+ (optional, more convenient)
 
 ## Usage
 
@@ -47,19 +52,22 @@ tar xf ../CSPP_VIIRS_EDR_V2.0.tar.gz
 * Create `docker-compose.yml`. If you decide not to use `docker-compose`, you're on your own. ;-) Just map the directives to `docker` command line options. Set *RUNUSER_UID* accordingly who will own everything in *home* and *data* directories. In the example below, it assumes that both *home* and *data* directories are in the same directory where `docker-compose.yml` is located.
 
 ```
-version: '2'
+version: '2.2'
 services:
   cspp:
     image: cheewai/cspp
     environment:
-      - RUNUSER_UID=1000
-    entrypoint: /docker-entrypoint.sh
+    - RUNUSER_UID=1000
     volumes:
-      - ./home:/home/runuser
-      - ./data:/data
+    - ./home:/home/runuser
+    - ./data:/data
 ```
 
 * Pull the [image](https://hub.docker.com/r/cheewai/cspp) from Docker hub, `docker-compose pull`. Alternatively, you can clone this git repo and build the Docker image locally, in which case, you should replace *image* with *build* in the `docker-compose.yml` file.
+
+* Read installation instructions to
+  * Create `/home/runuser/.bashrc`
+  * Schedule cron job to update ancillary files
 
 * Update the ancillary data, `docker-compose run --rm cspp /home/runuser/cspp_update.sh`. 
 
