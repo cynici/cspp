@@ -20,4 +20,5 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # By default, the container in daemon-mode simply runs
 # cron to update CSPP ancillary files
+USER root
 CMD ["/usr/sbin/cron", "-f"]
