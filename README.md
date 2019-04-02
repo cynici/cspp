@@ -1,4 +1,4 @@
-# CSPP Runtime Environment
+# CSPP v3.1 Runtime Environment
 
 This repo builds a Docker image that can run [Community Satellite Processing Package (CSPP)](http://cimss.ssec.wisc.edu/cspp/) package provided by [Cooperative Institute for Meteorological Satellite Studies (CIMSS)](http://cimss.ssec.wisc.edu/) of [Space Science and Engineering Center (SSEC)](http://www.ssec.wisc.edu/) at the [University of Wisconsin](http://www.wisc.edu/).
 
@@ -7,7 +7,7 @@ This repo builds a Docker image that can run [Community Satellite Processing Pac
 [gosu](https://github.com/tianon/gosu) is included so that the code is run using a non-root user in the Docker container for better security.
 
 
-## Hardware requirements for CSPP version 2
+## Hardware requirements
 
 * Intel or AMD CPU with 64-bit instruction support
 
@@ -38,18 +38,28 @@ concurrent processing core
 
 * Optionally, download the Test Files in the respective groups
 
-* Create a directory *home* and a subdirectory *CSPP* within, `mkdir -p home/CSPP`
+* Go to directory in a partition with plenty of free disk space
 
-* Create a directory *data*
+* Create directories for runtime user and data products
 
-* Extract every file download previously. To illustrate:
+```
+mkdir -p home/{CSPP,tmp} data
+```
+
+* Extract every file download previously.
 
 ```
 cd home/CSPP
+# Repeat tar xf for all downloaded tarballs
 tar xf ../CSPP_VIIRS_EDR_V2.0.tar.gz
 ```
 
-* Create `docker-compose.yml`. If you decide not to use `docker-compose`, you're on your own. ;-) Just map the directives to `docker` command line options. Set *RUNUSER_UID* accordingly who will own everything in *home* and *data* directories. In the example below, it assumes that both *home* and *data* directories are in the same directory where `docker-compose.yml` is located.
+* Create `docker-compose.yml`. If you decide not to use `docker-compose`,
+you're on your own. ;-) Just map the directives to `docker`
+command line options. Set *RUNUSER_UID* accordingly who will
+own everything in *home* and *data* directories. In the example below,
+it assumes that both *home* and *data* directories are in
+the same directory where `docker-compose.yml` is located.
 
 ```
 version: '2.2'
@@ -63,16 +73,29 @@ services:
     - ./data:/data
 ```
 
-* Pull the [image](https://hub.docker.com/r/cheewai/cspp) from Docker hub, `docker-compose pull`. Alternatively, you can clone this git repo and build the Docker image locally, in which case, you should replace *image* with *build* in the `docker-compose.yml` file.
+* Pull docker image [cheewai/cspp](https://hub.docker.com/r/cheewai/cspp)
+from Docker hub, `docker-compose pull`. Alternatively, you can clone
+this git repo and build the Docker image locally, in which case,
+you should replace *image* with *build* in the `docker-compose.yml` file.
 
 * Read installation instructions to
   * Create `/home/runuser/.bashrc`
   * Schedule cron job to update ancillary files
 
-* Update the ancillary data, `docker-compose run --rm cspp /home/runuser/cspp_update.sh`. 
+The CSPP software will download current ancillary files it requires
+while processing input data. You can shave some minutes off if you
+run an instance of this container in the background to use `cron`
+within to download ancillary files periodically.
 
-* At this point, the image is ready to run, `docker-compose --rm cspp viirs_edr.sh ...` 
+```
+docker run -d -v $PWD/home:/home/runuser -v $PWD/data:/data cheewai/cspp 
+```
 
+On arrival of new input data, simply run
+
+```
+docker-compose run -T --rm cspp viirs_edr.sh ...
+```
 
 ## Processing historical data sets
 
