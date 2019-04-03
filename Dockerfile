@@ -11,14 +11,7 @@ RUN apt-get update \
  && chmod +x /usr/bin/gosu \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD cspp-update.cron /etc/cron.d/cspp-update
-RUN chown root:root /etc/cron.d/cspp-update
-
+COPY cspp-update.sh /usr/local/bin/
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 WORKDIR /home/runuser
 ENTRYPOINT ["/docker-entrypoint.sh"]
-
-# By default, the container in daemon-mode simply runs
-# cron to update CSPP ancillary files
-USER root
-CMD ["/usr/sbin/cron", "-f"]

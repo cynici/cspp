@@ -2,7 +2,7 @@
 #
 # bash is a prerequisite
 #
-set -ux
+set -x
 if [ -n "${RUNUSER_UID:-}" ]; then
     export HOME="${RUNUSER_HOME:-/home/runuser}"
     if [ -x /usr/sbin/useradd ]; then
@@ -11,7 +11,9 @@ if [ -n "${RUNUSER_UID:-}" ]; then
         adduser -s /bin/false -D -h $HOME -H -u $RUNUSER_UID runuser
     fi
     if [ -f "$HOME/.bashrc" ] ; then
-        source $HOME/.bashrc
+        source $HOME/.bashrc || {
+            echo "ERROR: failed to source $HOME/.bashrc" >&2
+        }
     else
         echo "**** Create $HOME/.bashrc per installation instructions" >&2
     fi

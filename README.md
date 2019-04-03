@@ -43,7 +43,7 @@ concurrent processing core
 * Create directories for runtime user and data products
 
 ```
-mkdir -p home/{CSPP,tmp} data
+mkdir -p home/{CSPP,tmp} data/incoming
 ```
 
 * Extract every file download previously.
@@ -84,16 +84,17 @@ you should replace *image* with *build* in the `docker-compose.yml` file.
 
 The CSPP software will download current ancillary files it requires
 while processing input data. You can shave some minutes off if you
-run an instance of this container in the background to use `cron`
-within to download ancillary files periodically.
+run schedule a daily cron job to run this container to download
+ancillary files like so:
 
 ```
-docker run -d -v $PWD/home:/home/runuser -v $PWD/data:/data cheewai/cspp 
+docker-compose run -T --rm cspp /usr/local/bin/cspp-update.sh
 ```
 
 On arrival of new input data, simply run
 
 ```
+docker-compose run -T --rm cspp viirs_sdr.sh ...
 docker-compose run -T --rm cspp viirs_edr.sh ...
 ```
 
